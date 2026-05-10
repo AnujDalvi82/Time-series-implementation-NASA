@@ -33,13 +33,15 @@ class LSTMModel(nn.Module):
         out = self.fc2(out)
         return out
 
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
 model = None
 scaler = None
 test_df_processed = None
 feature_cols = None
 SEQ_LENGTH = 30
 
-@app.on_event("startup")
 def load_artifacts():
     global model, scaler, test_df_processed, feature_cols
     try:
@@ -78,6 +80,8 @@ def load_artifacts():
         print("Successfully loaded artifacts and preprocessed test dataset!")
     except Exception as e:
         print("Startup Error:", str(e))
+
+load_artifacts()
 
 @app.get("/engine/{engine_id}/history")
 def get_engine_history(engine_id: int):
