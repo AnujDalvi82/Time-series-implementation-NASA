@@ -1,7 +1,7 @@
 # ✈️ NASA Turbofan Engine Remaining Useful Life Prediction
 
 <p align="center">
-🔧 Predictive Maintenance | 📊 ML & Data Science | 🤖 Random Forest
+🔧 Predictive Maintenance | 📊 Deep Learning (LSTM) | 🤖 FastAPI Dashboard
 </p>
 
 ---
@@ -23,20 +23,20 @@ Accurate prediction of RUL enables:
 
 ---
 
+## 🚀 Live Production Deployment
+
+This project has been fully containerized and deployed as an interactive predictive maintenance dashboard.
+
+- **Hugging Face Space**: [NASA CMAPSS RUL Dashboard](https://huggingface.co/spaces/anujjj321/CMAPSS_Time_Series_evalutation)
+
+---
+
 ## 📂 Dataset
 
 ### About the Dataset
 The dataset used in this project is the **NASA CMAPSS Turbofan Engine Degradation Simulation Dataset**. This is a benchmark dataset widely used in prognostics and health management research.
 
 Each engine unit begins with different levels of wear and gradually degrades over time. Sensor readings and operational settings are recorded at every operational cycle until the engine fails.
-
-### Dataset Files
-
-| File | Description |
-|:-----|:------------|
-| `train_FD001.txt` | Training engine trajectories until failure |
-| `test_FD001.txt` | Test engine trajectories that stop before failure |
-| `RUL_FD001.txt` | True remaining useful life values for the test engines |
 
 ### Dataset Characteristics
 
@@ -51,121 +51,53 @@ Each engine unit begins with different levels of wear and gradually degrades ove
 
 ---
 
-## 🔬 Project Workflow
+## 🔬 Project Architecture & Workflow
 
-### Step 1: Data Preparation
-- Load CMAPSS dataset files
-- Assign descriptive column names to raw data
-- Merge cycle information for each engine
-- Compute Remaining Useful Life target values
+### 1. Data Processing
+- Extracted and normalized raw sensor telemetry.
+- Engineered sequential rolling windows to capture long-term temporal degradation.
+- Handled massive datasets using standard scaling and min-max normalization.
 
-### Step 2: Exploratory Data Analysis  
-- Visualize sensor behavior across operational cycles
-- Identify sensors that show degradation patterns
-- Analyze trends related to engine wear
-- Examine correlation between sensors and RUL
-- Understand the distribution of engine lifespans
+### 2. Deep Learning (LSTM)
+- Transitioned from baseline Random Forest models to a state-of-the-art **Long Short-Term Memory (LSTM)** neural network.
+- Why LSTM? LSTMs natively retain memory of previous operational cycles, making them the industry standard for time-series degradation tracking.
 
-### Step 3: Data Preprocessing
-- Remove sensors with low variance (no information content)
-- Handle missing values
-- Normalize/scale features
+### 3. Production Backend (FastAPI)
+- Developed a high-performance REST API using **FastAPI**.
+- The API dynamically serves real-time inference data and operational fleet status to the front end.
 
-### Step 4: Feature Engineering
-- **Rolling Mean Features**: Smooth sensor data over 5-cycle windows
-- **Rolling Standard Deviation**: Capture local variability
-- **Delta Features**: Calculate cycle-to-cycle changes
-- **Temporal Degradation Indicators**: Track trends over time
-
-### Step 5: Model Development
-- **Algorithm**: Random Forest Regression
-- **Why Random Forest?**:
-  - Handles non-linear relationships
-  - Provides feature importance rankings
-  - Resistant to overfitting
-  - Works well with multiple features
-
-### Step 6: Model Evaluation
-- Mean Absolute Error (MAE)
-- Root Mean Squared Error (RMSE)
-- NASA Scoring Function (asymmetric evaluation)
-- Prediction asymmetry analysis
+### 4. Interactive Dashboard
+- Created a beautiful, responsive, glassmorphism-inspired web UI to act as the primary operational dashboard.
+- Features real-time animated alerts and clear visual indicators for engine health status.
 
 ---
 
 ## 🗂 Repository Structure
 
-```
+```text
 Time-Series-Implementation-NASA/
 │
-├── CMAPSS_TimeSeries_Evaluation.ipynb   # Main analysis notebook
-├── train_FD001.txt                       # Training data
-├── test_FD001.txt                         # Test data
-├── RUL_FD001.txt                          # Ground truth RUL values
-├── Damage Propagation Modeling.pdf       # Reference documentation
-└── README.md                              # This file
+├── CMAPSS_TimeSeries_Evaluation.py   # Core analytics and pipeline
+├── cmapss_lstm.py                    # LSTM model definition and training script
+├── app.py                            # FastAPI production backend
+├── index.html                        # Front-end predictive maintenance dashboard
+├── lstm_model.pth                    # Saved PyTorch weights
+├── scaler.pkl                        # Data normalizer
+├── requirements.txt                  # Deployment dependencies
+├── Dockerfile                        # Containerization setup
+└── README.md                         # This file
 ```
 
 ---
 
 ## 🛠 Technologies Used
 
-- 🐍 **Python** - Programming language
-- 📊 **Pandas** - Data manipulation and analysis
-- 🔢 **NumPy** - Numerical computations
-- 📉 **Matplotlib** - Static visualization plotting
-- 📈 **Seaborn** - Statistical data visualization
-- 🤖 **Scikit Learn** - Machine learning algorithms
-
----
-
-## 📊 Results
-
-### Model Performance
-The machine learning model learns degradation signals from multiple sensors and predicts the remaining operational cycles of turbofan engines.
-
-### Key Findings
-- **Top Predictive Sensors**: Identified sensors with highest feature importance
-- **Feature Engineering Impact**: Rolling statistics improved model accuracy  
-- **Error Analysis**: Examined prediction bias (early vs late predictions)
-
-### Business Impact
-This demonstrates how machine learning can transform raw sensor telemetry into actionable maintenance insights for aerospace systems.
-
----
-
-## 🚀 Applications
-
-- ✈️ **Predictive Maintenance in Aviation** - Airline engine health monitoring
-- 🏭 **Industrial Equipment Monitoring** - Factory machinery lifecycle management
-- 📊 **Reliability Engineering** - System reliability analysis
-- ⏳ **Time Series Machine Learning** - General time-based prediction problems
-- 🔧 **Condition-Based Maintenance** - Real-time equipment health assessment
-
----
-
-## 🔭 Future Improvements
-
-### Short-term Enhancements
-- ☐ Hyperparameter tuning for Random Forest
-- ☐ Feature selection based on importance
-- ☐ Cross-validation for robust evaluation
-
-### Long-term Improvements
-- ☐ Advanced survival analysis approaches
-- ☐ Gradient boosting models (XGBoost, LightGBM)
-- ☐ Deep learning-based temporal models (LSTM, GRU)
-- ☐ Sensor importance analysis
-- ☐ Ensemble methods
-- ☐ Real-time prediction deployment
-
----
-
-## 📚 References
-
-- **NASA Prognostics Center of Excellence** - CMAPSS Turbofan Engine Degradation Simulation Dataset
-- **PHM Society Conference Papers** - Prognostics and health management research
-- **IEEE** - "Prognostics and Health Management: A Review"
+- 🐍 **Python** - Core language
+- 🔥 **PyTorch** - Deep Learning framework (LSTM)
+- ⚡ **FastAPI** - High-speed backend API
+- 💻 **HTML/CSS/JS** - Frontend dashboard (Vanilla, Glassmorphism design)
+- 🐳 **Docker** - Containerization
+- 🤗 **Hugging Face Spaces** - Cloud deployment
 
 ---
 
@@ -186,4 +118,3 @@ This project is for educational and research purposes.
 ## 🙏 Acknowledgments
 
 Thanks to NASA for providing the CMAPSS dataset and to the open-source community for the tools used in this project.
-
