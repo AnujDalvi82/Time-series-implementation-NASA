@@ -1,3 +1,13 @@
+---
+title: CMAPSS Time Series Evaluation
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 8000
+pinned: false
+---
+
 # ✈️ NASA Turbofan Engine Remaining Useful Life Prediction
 
 <p align="center">
